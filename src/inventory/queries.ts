@@ -5,7 +5,7 @@ export const insertStockMovement = 'INSERT INTO stock_movements (item_id, date, 
 export const getAllItems = `SELECT * FROM inventory`;
 
 export const createTables =`
-    CREATE TABLE IF NOT EXISTS items (
+    CREATE TABLE IF NOT EXISTS inventory (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       quantity INTEGER NOT NULL DEFAULT 0,
