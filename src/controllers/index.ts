@@ -2,6 +2,8 @@ import express from "express";
 import { selectItemById, updateItemQuantity, insertItem, insertStockMovement, getAllItems } from "../inventory/queries";
 import { InventoryItem, StockMovement } from "../types";
 import db from "../inventory";
+import { pool } from "../inventory/db";
+
 
 export const AddInventory = async (req: express.Request, res: express.Response) => {
     try {

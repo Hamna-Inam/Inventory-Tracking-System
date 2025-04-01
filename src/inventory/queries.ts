@@ -22,3 +22,5 @@ export const createTables =`
       date DATETIME DEFAULT CURRENT_TIMESTAMP, -- Auto-set date
       FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
     );`
+
+
