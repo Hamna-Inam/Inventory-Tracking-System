@@ -1,26 +1,13 @@
-export const selectItemById = 'SELECT * FROM inventory WHERE id = ?';
-export const updateItemQuantity = 'UPDATE inventory SET quantity = quantity + ? WHERE id = ?';
-export const insertItem = 'INSERT INTO inventory (id, name, quantity, price) VALUES (?, ?, ?, ?)';
-export const insertStockMovement = 'INSERT INTO stock_movements (item_id, date, quantity, type) VALUES (?, ?, ?, ?)';
-export const getAllItems = `SELECT * FROM inventory`;
-
-export const createTables =`
-    CREATE TABLE IF NOT EXISTS inventory (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      quantity INTEGER NOT NULL DEFAULT 0,
-      price REAL NOT NULL,
-      category TEXT,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    );
-    
-    CREATE TABLE IF NOT EXISTS stock_movements (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      item_id INTEGER NOT NULL,
-      type TEXT CHECK(type IN ('stock-in', 'sale', 'removal')),
-      quantity INTEGER NOT NULL,
-      date DATETIME DEFAULT CURRENT_TIMESTAMP, -- Auto-set date
-      FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
-    );`
-
-
+export const addProduct = `INSERT INTO products (name, price) VALUES ($1, $2) RETURNING *`;
+export const getAllProducts = `SELECT * FROM products`;
+export const getProductById = `SELECT * FROM products WHERE id = $1`;
+export const updateProduct = `UPDATE products SET name = $1, price = $2 WHERE id = $3 RETURNING *`;
+export const deleteProduct=`DELETE FROM products WHERE id = $1 RETURNING *`;
+export const addStock = `INSERT INTO stock (store_id, product_id, quantity) VALUES ($1, $2, $3) RETURNING *`;
+export const getStoreStock = `SELECT * FROM stock WHERE store_id = $1;`
+export const updateStock = `UPDATE stock SET quantity = $1 WHERE store_id = $2 AND product_id = $3 RETURNING *`;
+export const getAllStock = `SELECT * FROM stock`;
+export const addStore = `INSERT INTO stores (name) VALUES ($1) RETURNING *`;
+export const getAllStores = `SELECT * FROM stores`;
+export const getStoreById = `SELECT * FROM stores WHERE id = $1`;
+export const updateStore = `UPDATE stores SET name = $1, address = $2 WHERE id = $3 RETURNING *`;

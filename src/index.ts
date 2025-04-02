@@ -1,5 +1,5 @@
 import express from "express";
-import { routerpg } from "./router";
+import router from "./router";
 import dotenv from 'dotenv';
 import { pool } from "./inventory/db";
 import createTables from "./inventory/dbInit";
@@ -20,7 +20,7 @@ catch(err){
 }
 
 
-app.use('/',routerpg);
+app.use('/',router);
 
 
 app.listen(PORT , ()=> {
