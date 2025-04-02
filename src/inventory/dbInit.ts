@@ -4,10 +4,12 @@ const createTables = async () => {
     const query = `
     CREATE TABLE IF NOT EXISTS stores (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL UNIQUE,
-    address TEXT,
+    name TEXT NOT NULL,
+    address TEXT NOT NULL,
+    UNIQUE (name,address),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
+
 
     CREATE TABLE IF NOT EXISTS products (
     id SERIAL PRIMARY KEY,

@@ -1,7 +1,6 @@
 import express from "express";
 import router from "./router";
 import dotenv from 'dotenv';
-import { pool } from "./inventory/db";
 import createTables from "./inventory/dbInit";
 
 dotenv.config();
