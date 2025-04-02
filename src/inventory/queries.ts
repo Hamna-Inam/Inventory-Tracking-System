@@ -13,3 +13,10 @@ export const getAllStores = `SELECT * FROM stores`;
 export const getStoreById = `SELECT * FROM stores WHERE id = $1`;
 export const updateStore = `UPDATE stores SET name = $1, address = $2 WHERE id = $3 RETURNING *`;
 export const deleteStore=`DELETE FROM stores WHERE id = $1 RETURNING *`;
+export const getFilteredStock = `
+    SELECT * FROM stock
+    WHERE ($1::INTEGER IS NULL OR store_id = $1)
+    AND ($2::TIMESTAMP IS NULL OR last_updated <= $2)
+    AND ($3::TIMESTAMP IS NULL OR last_updated >= $3)
+    ORDER BY last_updated DESC;
+`;

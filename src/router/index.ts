@@ -1,5 +1,5 @@
 import express from "express";
-import { AddProduct, AddStock, AddStore, DeleteProduct, DeleteStock, DeleteStore, GetAllProducts, GetAllStock, GetAllStores, GetProductById, GetStore, GetStoreStock, UpdateProduct, UpdateStock, UpdateStore } from "../controllers";
+import { AddProduct, AddStock, AddStore, DeleteProduct, DeleteStock, DeleteStore, GetAllProducts, GetAllStock, GetAllStores, GetProductById, GetStore, GetStoreStock, UpdateProduct, UpdateStock, UpdateStore, GetFilteredStock } from "../controllers";
 import { basicAuth } from "../middleware";
 
 const router = express.Router();
@@ -19,6 +19,7 @@ router.get("/get-store/:id", basicAuth,GetStore);
 router.put("/update-store/:id", basicAuth,UpdateStore);
 router.delete("/delete-store/:id",basicAuth, DeleteStore);
 router.delete("/delete-stock/:id",basicAuth, DeleteStock);
+router.get("/get-filtered-stock/", basicAuth,GetFilteredStock);
 
 
 export default router;

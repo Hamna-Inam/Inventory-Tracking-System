@@ -1,6 +1,6 @@
 import express from "express";
 import { pool } from "../inventory/db";
-import { addProduct, getAllProducts, getProductById, updateProduct, getStoreStock, deleteProduct, addStock, updateStock, getAllStock, addStore, getAllStores, getStoreById, updateStore, deleteStore, deleteStock } from "../inventory/queries";
+import { addProduct, getAllProducts, getProductById, updateProduct, getStoreStock, deleteProduct, addStock, updateStock, getAllStock, addStore, getAllStores, getStoreById, updateStore, deleteStore, deleteStock, getFilteredStock } from "../inventory/queries";
 
 export const AddProduct = async (req: express.Request, res: express.Response) => {
     const {name, price} = req.body;
@@ -202,48 +202,19 @@ export const DeleteStock = async (req: express.Request, res: express.Response) =
     }
 };
 
+export const GetFilteredStock = async (req: express.Request, res: express.Response) => {
 
+    const { storeId, beforeDate, afterDate } = req.query;
 
+    try {
+        const result = await pool.query(getFilteredStock, [
+            storeId ? Number(storeId) : null,
+            beforeDate ? new Date(beforeDate as string) : null,
+            afterDate ? new Date(afterDate as string) : null
+        ]);
 
-
-
-
-/*
-export const GetAllItems = async (req: express.Request, res: express.Response) => {
-
-   // const db = await dbPromise; 
-
-    db.all( getAllItems, (err: Error ,Inventory: InventoryItem[]) => {
-        res.status(200).json(Inventory);
-    } );
+        res.json(result.rows);
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching filtered stock data" });
+    }
 };
-
-export const RemoveItem = async (req:express.Request, res: express.Response) => {
-
-    //const db = await dbPromise; 
-
-    const { id, quantity, type } = req.body; 
-
-    db.get(selectItemById, [id], (err, item: InventoryItem) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (!item) return res.status(404).json({ error: "Item not found" });
-      
-        if (item.quantity < quantity) {
-            return res.status(400).json({ error: "Insufficient stock" });
-        }
-
-        db.run(updateItemQuantity, [quantity, id], (err) => {
-            if (err) return res.status(500).json({ error: err.message });
-
-            // Log stock movement
-            db.run(insertStockMovement, 
-                [id, new Date(), quantity, type]);
-
-            res.json({ message: "Stock removed" });
-
-        });
-    });
-};
-
-
-*/
