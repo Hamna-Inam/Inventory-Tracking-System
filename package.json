@@ -20,8 +20,10 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "@types/express-rate-limit": "^6.0.2",
     "better-sqlite3": "^11.9.1",
     "dotenv": "^16.4.7",
+    "express-rate-limit": "^7.5.0",
     "pg": "^8.14.1",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7"

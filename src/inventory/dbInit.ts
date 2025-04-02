@@ -30,7 +30,7 @@ const createTables = async () => {
 
     try {
         await pool.query(query);
-        console.log("Tables created successfully.");
+        console.log("Database initialized successfully.");
     } catch (error) {
         console.error("Error creating tables:", error);
     }
