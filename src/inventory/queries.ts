@@ -20,3 +20,6 @@ export const getFilteredStock = `
     AND ($3::TIMESTAMP IS NULL OR last_updated >= $3)
     ORDER BY last_updated DESC;
 `;
+export const logAction = `INSERT INTO audit_logs 
+         (action, details, timestamp)
+         VALUES ($1, $2, NOW())`

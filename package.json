@@ -21,7 +21,9 @@
   },
   "dependencies": {
     "@types/express-rate-limit": "^6.0.2",
+    "amqplib": "^0.10.7",
     "better-sqlite3": "^11.9.1",
+    "concurrently": "^9.1.2",
     "dotenv": "^16.4.7",
     "express-rate-limit": "^7.5.0",
     "pg": "^8.14.1",

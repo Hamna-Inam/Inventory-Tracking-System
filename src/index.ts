@@ -1,7 +1,7 @@
 import express from "express";
 import router from "./router";
 import dotenv from 'dotenv';
-import createTables from "./inventory/dbInit";
+import {createTables, enableSharding} from "./inventory/dbInit";
 import limiter from "./middleware";
 
 dotenv.config();
@@ -15,6 +15,7 @@ app.use(limiter);
 
 try {
 createTables();
+//enableSharding();
 }
 catch(err){
   console.log(err);
