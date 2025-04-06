@@ -2,6 +2,7 @@ import express from "express";
 import { pool } from "../inventory/db";
 import { addProduct, getAllProducts, getProductById, updateProduct, getStoreStock, deleteProduct, addStock, updateStock, getAllStock, addStore, getAllStores, getStoreById, updateStore, deleteStore, deleteStock, getFilteredStock } from "../inventory/queries";
 import { publishEvent } from "../queue/publisher";
+import redisClient from "../utils/redisClient";
 
 export const AddProduct = async (req: express.Request, res: express.Response) => {
     const {name, price} = req.body;
@@ -51,12 +52,30 @@ export const GetAllProducts = async (req: express.Request, res: express.Response
 
   export const GetProductById = async (req: express.Request, res: express.Response) => {
     const { id } = req.params;
+
+    const cacheKey = `store-product:${id}`;
+
+    const cachedData = await redisClient.get(cacheKey);
+
+    if (cachedData) {
+        const product = JSON.parse(cachedData); 
+        console.log('Cache hit');
+        res.json(product); 
+    }
+
+        else {
     try {
         const result = await pool.query(getProductById, [id]);
         if (result.rows.length === 0) res.status(404).json({ error: "Product not found" });
-        else res.json(result.rows[0]);
+        else {
+            
+            await publishEvent('GET_PRODUCT', result.rows[0]);    
+            res.json(result.rows[0]);
+        }
     } catch (error) {
         res.status(500).json({ error: "Error fetching product" });
+    }
+
     }
 };
 

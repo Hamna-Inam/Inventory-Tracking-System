@@ -2,6 +2,7 @@
 import amqp from 'amqplib';
 import { pool } from "../inventory/db";
 import { logAction } from '../inventory/queries';
+import redisClient from '../utils/redisClient';
 
 export const startConsumer = async () => {
   try {
@@ -25,6 +26,18 @@ export const startConsumer = async () => {
               [event.type || 'system', JSON.stringify(event.data)]
             );
             console.log(`Logged `);
+
+            if (event.type === 'GET_PRODUCT' && event.data?.id) {
+              //const redis = await redisClient(); // get Redis connection
+              const cacheKey = `store-product:${event.data.id}`;
+      
+              await redisClient.set(cacheKey, JSON.stringify(event.data), {
+                EX: 3600 // 1 hour expiry
+              });
+      
+              console.log(`Cached product ${event.data.id} in Redis`);
+            }
+      
           
         } catch (error) {
           console.error('Error processing message:', error);
@@ -33,7 +46,7 @@ export const startConsumer = async () => {
     }, { noAck: true });
 
   } catch (error) {
-    console.error('❌ Consumer error:', error);
+    console.error('Consumer error:', error);
   }
 }
 
