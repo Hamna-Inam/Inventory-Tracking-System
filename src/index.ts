@@ -3,10 +3,12 @@ import router from "./router";
 import {createTables, enableSharding} from "./inventory/dbInit";
 import limiter from "./middleware";
 import { startConsumer } from "./queue/consumer";
+import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.json());
 app.use(limiter);
 

@@ -13,7 +13,7 @@ export const startConsumer = async (retryCount = 0) => {
   
   try {
     // Use environment variable for RabbitMQ URL with explicit fallback
-    const rabbitUrl = process.env.RABBITMQ_URL;
+    const rabbitUrl = process.env.RABBITMQ_URL || "amqp://rabbitmq:5672";
     console.log('Environment RABBITMQ_URL:', rabbitUrl);
     
     if (!rabbitUrl) {

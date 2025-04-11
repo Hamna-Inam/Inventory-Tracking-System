@@ -3,6 +3,7 @@ kind: ConfigMap
 metadata:
   name: inventory-config
 data:
+  PG_USER: "ITS-Bazaar_owner"
   PG_HOST: "ep-icy-night-a5w7jcxg-pooler.us-east-2.aws.neon.tech"
   PG_NAME: "ITS-Bazaar"
   PG_PORT: "5432"
