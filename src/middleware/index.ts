@@ -39,7 +39,7 @@ export const basicAuth = (req: express.Request, res: express.Response, next: exp
 };
 
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, 
+    windowMs: 30 * 60 * 1000, 
     max: 1000, 
     message: { error: "Too many requests, please try again later." },
     headers: true, 

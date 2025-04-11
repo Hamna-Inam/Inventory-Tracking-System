@@ -73,6 +73,7 @@ export const GetAllProducts = async (req: express.Request, res: express.Response
             res.json(result.rows[0]);
         }
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error: "Error fetching product" });
     }
 

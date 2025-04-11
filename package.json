@@ -1,10 +1,11 @@
 {
   "name": "src",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon"
+    "start": "nodemon",
+    "dev": "concurrently \"ts-node ./src/index.ts\" \"ts-node ./src/queue/consumer.ts\""
   },
   "keywords": [],
   "author": "",

@@ -9,6 +9,9 @@ export const pool = new Pool({ // create an instance of Pool
     database:process.env.PG_NAME,
     password:process.env.PG_PASSWORD,
     port: 5432,
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
 pool.on('error', (err, client) => {
