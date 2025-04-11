@@ -1,7 +1,7 @@
 import amqp from 'amqplib';
 
 export async function publishEvent(type: string, data: any, source = 'API') {
-  const connection = await amqp.connect('amqp://rabbitmq');
+  const connection = await amqp.connect(process.env.RABBITMQ_URL);
   const channel = await connection.createChannel();
   
   await channel.assertExchange('inventory', 'fanout', { durable: false });

@@ -141,14 +141,17 @@ export const AddStock = async (req: express.Request, res: express.Response) => {
 };
 
 export const GetStoreStock = async (req: express.Request, res: express.Response) => {
-    const  storeId  = req.params.id;
+    const storeId = req.params.id;
     try {
-        const result = await pool.query(
-            getStoreStock,
-            [storeId]
-        );
-        res.json(result.rows);
+        const result = await pool.query(getStoreStock, [storeId]);
+        if (result.rows.length === 0) {
+            res.status(404).json({ error: "No stock found for this store" });
+        } else {
+            await publishEvent('GET_STORE_STOCK', { storeId, stock: result.rows });
+            res.json(result.rows);
+        }
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error: "Error fetching stock for this store" });
     }
 };
@@ -221,18 +224,34 @@ export const GetAllStores = async (req: express.Request, res: express.Response) 
       if (result.rows.length === 0) res.status(404).json({ error: "Stores not found" });
       else res.json(result.rows);
     } catch (error) {
+        console.log(error);
       res.status(500).json({ error: "Error fetching stores" });
     }
   };
 
   export const GetStore = async (req: express.Request, res: express.Response) => {
     const { id } = req.params;
-    try {
-        const result = await pool.query(getStoreById, [id]);
-        if (result.rows.length === 0) res.status(404).json({ error: "Store not found" });
-        else res.json(result.rows[0]);
-    } catch (error) {
-        res.status(500).json({ error: "Error fetching store" });
+    const cacheKey = `store:${id}`;
+
+    const cachedData = await redisClient.get(cacheKey);
+
+    if (cachedData) {
+        const store = JSON.parse(cachedData);
+        console.log('Cache hit for store');
+        res.json(store);
+    } else {
+        try {
+            const result = await pool.query(getStoreById, [id]);
+            if (result.rows.length === 0) {
+                res.status(404).json({ error: "Store not found" });
+            } else {
+                await publishEvent('GET_STORE', result.rows[0]);
+                res.json(result.rows[0]);
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: "Error fetching store" });
+        }
     }
 };
 

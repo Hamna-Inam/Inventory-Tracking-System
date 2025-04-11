@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: inventory-config
+data:
+  PG_HOST: "ep-icy-night-a5w7jcxg-pooler.us-east-2.aws.neon.tech"
+  PG_NAME: "ITS-Bazaar"
+  PG_PORT: "5432"
+  BASIC_AUTH_USERNAME: "admin"
+  RABBITMQ_HOST: "rabbitmq"
+  RABBITMQ_PORT: "5672"
+  RABBITMQ_DEFAULT_USER: "guest"
+  REDIS_URL: "redis://redis:6379" 

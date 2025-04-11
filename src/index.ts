@@ -1,11 +1,8 @@
 import express from "express";
 import router from "./router";
-import dotenv from 'dotenv';
 import {createTables, enableSharding} from "./inventory/dbInit";
 import limiter from "./middleware";
 import { startConsumer } from "./queue/consumer";
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
