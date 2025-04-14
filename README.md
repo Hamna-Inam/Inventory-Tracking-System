@@ -38,8 +38,9 @@ A scalable, event-driven REST API for tracking product stock across multiple sto
 - **Stock updates** are logged in an audit log table
 - **No frontend** is required for this challenge
 - API is protected with **Basic Authentication**
-- Redis is used **only for reading product details**, with 1-hour expiration
+- Redis is used **only for reading product and store details**, with 1-hour expiration
 - RabbitMQ is used for **event-based logging and caching** (e.g., on `GET_PRODUCT`)
+- Logs are stored in a table — no full observability/logging stack 
 
 ---
 
@@ -75,7 +76,7 @@ All endpoints are protected using **Basic Auth** (`admin` / `hamnapassword123`).
 ## Rate Limiting
 
 `express-rate-limit` is used to prevent abuse.  
-Defaults to 100 requests per minute per IP.
+Defaults to 1000 requests per 30 minutes per IP.
 
 ---
 
@@ -120,6 +121,7 @@ Defaults to 100 requests per minute per IP.
 - RabbitMQ for background logging + caching
 - Dockerized architecture, deployed with Kubernetes
 - Durable retry logic in RabbitMQ consumers
+- Logging via a log table
 
 ---
 
