@@ -125,7 +125,89 @@ Defaults to 1000 requests per 30 minutes per IP.
 
 ---
 
-## Running the Project
+### Local Development Setup
 
+1. Clone the repository:
 ```bash
-docker-compose up --build
+git clone <repository-url>
+cd inventory-tracking-system
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Set up environment variables:
+Create a `.env` file in the root directory with the following variables:
+```env
+PG_USER=your_neon_username
+PG_HOST=your_neon_host
+PG_NAME=your_database_name
+PG_PASSWORD=your_neon_password
+PG_PORT=5432
+BASIC_AUTH_USERNAME=admin
+BASIC_AUTH_PASSWORD=your_password
+RABBITMQ_URL=amqp://localhost:5672
+REDIS_URL=redis://localhost:6379
+```
+
+4. Start the services:
+```bash
+# Start Redis
+docker run -d -p 6379:6379 redis:7-alpine
+
+# Start RabbitMQ
+docker run -d -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+
+# Start the application
+npm run dev
+```
+
+### Kubernetes Deployment
+
+1. Start Minikube:
+```bash
+minikube start
+```
+
+2. Deploy the services in order:
+```bash
+# Apply ConfigMap and Secrets
+kubectl apply -f k8s/configmap.yaml
+kubectl apply -f k8s/secret.yaml
+
+# Deploy Redis
+kubectl apply -f k8s/redis-deployment.yaml
+
+# Deploy RabbitMQ
+kubectl apply -f k8s/rabbitmq-deployment.yaml
+
+# Deploy the Inventory API
+kubectl apply -f k8s/inventory-deployment.yaml
+```
+
+3. Access the API:
+```bash
+# Port forward to access the API
+kubectl port-forward service/inventory-app 3000:3000
+
+# Test the API
+curl http://localhost:3000/health
+```
+
+### Environment Variables
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| PG_USER | Neon.tech database username | 
+| PG_HOST | Neon.tech database host |
+| PG_NAME | Database name |
+| PG_PASSWORD | Database password | your_password |
+| PG_PORT | Database port | 5432 |
+| BASIC_AUTH_USERNAME | API authentication username | admin |
+| BASIC_AUTH_PASSWORD | API authentication password | your_password |
+| RABBITMQ_URL | RabbitMQ connection URL | amqp://localhost:5672 |
+| REDIS_URL | Redis connection URL | redis://localhost:6379 |
+
+
